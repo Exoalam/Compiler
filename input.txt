@@ -1,19 +1,25 @@
+@! Function Implementation !@
 outputi(inum f->triplesum(10,20,):{	
 	30 feedback
 })
 
+inum LETSGO(): {
+@! Initialization !@
 var val1:inum << 0
 var val2:fnum << 0.0
 var val3:charry << "VOID"
 
+@! Print to User !@
 outputi(val1)
 outputf(val2)
 outputs(val3)
 
+@! User Input !@
 var newval:inum << 0
 inputi(newval)
 outputi(newval)
 
+@! Integer Add Sub Mul Div Mod !@
 var num1:inum << 10
 var num2:inum << 5
 var result:inum << 0
@@ -33,6 +39,7 @@ outputi(result)
 result << %(num1,num2)
 outputi(result)
 
+@! Float Add Sub Mul Div Mod !@
 var fnm1:fnum << 10.0
 var fnm2:fnum << 5.0
 var result2:fnum << 0.0
@@ -49,3 +56,93 @@ outputf(result2)
 result2 << /(fnm1,fnm2)
 outputf(result2)
 
+@! Increment Decrement !@
+var inc:inum << 0
+inc << +(inc,+)
+outputi(inc)
+
+var dec:inum << 5
+dec << -(dec,-)
+outputi(dec)
+
+@! Condition !@
+outputi(<(5,2))
+outputi(>(5,2))
+outputi(==(5,5))
+outputi(!=(5,2))
+outputi(<=(5,2))
+outputi(>=(5,2))
+
+@! Array !@
+@arr:inum[100]
+{@arr,0} << 100
+{@arr,1} << 50
+outputi({@arr,0})
+outputi({@arr,1})
+
+@! IF ELSE !@
+var d1:inum << 5
+fi[<(d1,5)]{
+    +(d1,+)
+}
+fie[==(d1,5)]{
+    d1
+}
+fin{
+    -(d1,-)
+}     
+
+@! Switch Case !@
+var d2:inum << 2
+
+sinit[d2]
+opt[1]:
+   10
+opt[2]:
+   20
+opt[3]:
+   30
+dd:
+   40
+   
+@! FOR Loop !@
+var d3:inum << 1
+var d4:inum << 100
+floop[d3, <(d3,5), +(d3,+)]{
+      d4
+}    
+
+@! WHILE Loop !@
+var d5:inum << 1
+var brk:inum << 6
+wloop[<(d5,5)]{
+    d4
+}      
+wloop[1]{
+    d4
+    stop(brk)
+}
+
+@! DO WHILE Loop !@
+var d6:inum << 1
+do{
+    d4
+}
+loop[<(d6,5)]        
+               
+@! Some Build in Functions !@
+bf->LEN("HELLO WORLD")
+bf->PRIME(50)
+bf->MIN(5,10)
+bf->MAX(10,100)
+bf->GCD(10,2)
+bf->SIN(30.0)
+bf->COS(30.0)
+bf->TAN(45.0)
+bf->POW(2,4)
+bf->LN(10.0)
+bf->FLOOR(10.5)
+bf->CEIL(10.5)
+
+feedback(0)
+}

@@ -1,13 +1,71 @@
+This is a Comment
 60
+This is a Comment
+This is a Comment
 0
 0.000000
-VOID 0
+VOID This is a Comment
+0
+This is a Comment
 15
 5
 50
 2
 0
+This is a Comment
 15.000000
 5.000000
 50.000000
 2.000000
+This is a Comment
+1
+4
+This is a Comment
+0
+1
+1
+1
+0
+1
+This is a Comment
+100
+50
+This is a Comment
+ESIF statement output 5
+This is a Comment
+This is a switch statement.
+Case 2: ouput: 20
+This is a Comment
+For Iteration:1 output:100
+For Iteration:2 output:100
+For Iteration:3 output:100
+For Iteration:4 output:100
+This is a Comment
+While Iteration:1 output:100
+While Iteration:2 output:100
+While Iteration:3 output:100
+While Iteration:4 output:100
+While Iteration:1 output:100
+While Iteration:2 output:100
+While Iteration:3 output:100
+While Iteration:4 output:100
+While Iteration:5 output:100
+While Iteration:6 output:100
+This is a Comment
+Do_While Iteration:1 output:100
+Do_While Iteration:2 output:100
+Do_While Iteration:3 output:100
+Do_While Iteration:4 output:100
+This is a Comment
+Lenght of string: 11
+Not prime.
+5
+100
+2
+0.500001
+0.866025
+1.000004
+1.000000
+2.302585
+10
+11

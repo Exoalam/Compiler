@@ -46,7 +46,7 @@
 "@"                               {return *yytext;}
 [#][a-z<>.h]+                     {return HEAD;}
 [/]{2}.*                          {return CMT;}
-[@][a-zA-Z0-9]+                      {yylval.variable.str = yytext;
+[@][a-zA-Z0-9]+                   {yylval.variable.str = yytext;
                                     return AN;}
 [ ;\t\n]                           {}
 "stop"                            {return STOP;}
@@ -63,7 +63,7 @@
 "bf->COS"                         {return COS;}
 "bf->TAN"                         {return TAN;}
 "bf->POW"                         {return POW;}
-"ln"                              {return LN;}
+"bf->LN"                          {return LN;}
 "bf->PRIME"                       {return PRIME;}
 "outputi"                         {return OUTPUTI;}
 "outputf"                         {return OUTPUTF;}
@@ -89,6 +89,8 @@
 "opt"                             {return CA;}
 "dd"                              {return DF;}
 "do"                              {return DO;}
+"LETSGO"                          {return MAIN;}
+"@!".*"!@"                        {printf("This is a Comment\n");}
 [a-zA-Z][a-zA-Z0-9]*              {yylval.variable.str = yytext;
                                     return ID;}
 .                                 {printf("Unknown character.\n");}

@@ -48,8 +48,8 @@
     }variable;
 }
 %start program
-%token<variable>INT INTT FL FLOAT ID STRING STT VOID AN INIT EQ NEQ GEQ LEQ STOP GOING LOOP FUN
-%type<variable>statement factor expr assignments assignment var declaration type display input add sub mul div mod great less equal notequal eqgreat eqless condition if_else elseif else switch_ case cases df for while break_con do_while array array_assignment function return
+%token<variable>INT INTT FL FLOAT ID STRING STT VOID AN INIT EQ NEQ GEQ LEQ STOP GOING LOOP FUN MAIN
+%type<variable>statement factor expr assignments assignment var declaration type display input add sub mul div mod great less equal notequal eqgreat eqless condition if_else elseif else switch_ case cases df for while break_con do_while array array_assignment function return built_func main end
 %token IF ELIF ELSE FOR SW CA WHILE COL INC DEC MIN MAX GCD OUTPUTI DO PRIME DF POW OUTPUTF PFA SINE COS TAN LN CMT HEAD ABS FLOOR CEIL RET OUTPUTS PFSN LEN CMP CAT CPY END INPUTI INPUTF
 %left '+' '-'
 %left '*' '/'
@@ -58,9 +58,9 @@
 %%
 
 program:
-    |                       program statement 
+    |program statement
+    |
     ;
-
 statement:
     declaration 
     |assignments
@@ -74,13 +74,22 @@ statement:
     |do_while
     |array
     |array_assignment 
+    |built_func
     |function
+    |main
+    |end
     ;
 
+main:
+    type MAIN '('')' ':' '{'
+    ;
+    
+end:
+    RET '(' expr ')' '}'
+    ;
 declaration:
     INIT assignments
     ;
-
     
 assignments:
     assignment 
@@ -143,7 +152,9 @@ function:
 								    int val2 = $6.ival;
 								    int val3 = $11.ival;
 								    $$.ival = val1 + val2 + val3;}
-        |LEN '(' expr ')'{int a=strlen($3.st);printf("Lenght of string: %d\n",a);$$.ival=a;}
+        ;
+built_func:        								    
+        LEN '(' expr ')'{int a=strlen($3.st);printf("Lenght of string: %d\n",a);$$.ival=a;}
         |CMP '(' expr ',' expr ')'{store n = find_value(&$3.str),m=find_value(&$5.str);int a = strcmp(n.vas,m.vas);}
         |CAT '(' expr ',' expr ')'{int i = add_value(&$3.str),j = add_value(&$5.str);strcat(symbol_table[i].vas,symbol_table[j].vas);}
         |PRIME '(' expr ')'{
