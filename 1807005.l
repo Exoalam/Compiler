@@ -8,6 +8,7 @@
 %}
 
 %%
+"dep"[ ]+[A-Za-z0-9_.]+           {return DEP;}
 "var"[ ]*                         {return INIT;}
 [+-]?[0-9]+                         {yylval.variable.ival = atoi(yytext);
                                      return INT;}

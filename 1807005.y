@@ -48,8 +48,8 @@
     }variable;
 }
 %start program
-%token<variable>INT INTT FL FLOAT ID STRING STT VOID AN INIT EQ NEQ GEQ LEQ STOP GOING LOOP FUN MAIN
-%type<variable>statement factor expr assignments assignment var declaration type display input add sub mul div mod great less equal notequal eqgreat eqless condition if_else elseif else switch_ case cases df for while break_con do_while array array_assignment function return built_func main end
+%token<variable>INT INTT FL FLOAT ID STRING STT VOID AN INIT EQ NEQ GEQ LEQ STOP GOING LOOP FUN MAIN DEP
+%type<variable>statement factor expr assignments assignment var declaration type display input add sub mul div mod great less equal notequal eqgreat eqless condition if_else elseif else switch_ case cases df for while break_con do_while array array_assignment function return built_func main end dep
 %token IF ELIF ELSE FOR SW CA WHILE COL INC DEC MIN MAX GCD OUTPUTI DO PRIME DF POW OUTPUTF PFA SINE COS TAN LN CMT HEAD ABS FLOOR CEIL RET OUTPUTS PFSN LEN CMP CAT CPY END INPUTI INPUTF
 %left '+' '-'
 %left '*' '/'
@@ -78,8 +78,11 @@ statement:
     |function
     |main
     |end
+    |dep
     ;
-
+dep:
+    DEP
+    ;
 main:
     type MAIN '('')' ':' '{'
     ;

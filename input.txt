@@ -1,3 +1,6 @@
+dep lib.h
+dep stdlib.h
+
 @! Function Implementation !@
 outputi(inum f->triplesum(10,20,):{	
 	30 feedback
