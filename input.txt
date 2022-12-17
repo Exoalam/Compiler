@@ -1,0 +1,51 @@
+outputi(inum f->triplesum(10,20,):{	
+	30 feedback
+})
+
+var val1:inum << 0
+var val2:fnum << 0.0
+var val3:charry << "VOID"
+
+outputi(val1)
+outputf(val2)
+outputs(val3)
+
+var newval:inum << 0
+inputi(newval)
+outputi(newval)
+
+var num1:inum << 10
+var num2:inum << 5
+var result:inum << 0
+
+result << +(num1,num2)
+outputi(result)
+
+result << -(num1,num2)
+outputi(result)
+
+result << *(num1,num2)
+outputi(result)
+
+result << /(num1,num2)
+outputi(result)
+
+result << %(num1,num2)
+outputi(result)
+
+var fnm1:fnum << 10.0
+var fnm2:fnum << 5.0
+var result2:fnum << 0.0
+
+result2 << +(fnm1,fnm2)
+outputf(result2)
+
+result2 << -(fnm1,fnm2)
+outputf(result2)
+
+result2 << *(fnm1,fnm2)
+outputf(result2)
+
+result2 << /(fnm1,fnm2)
+outputf(result2)
+

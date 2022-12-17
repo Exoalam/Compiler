@@ -25,8 +25,13 @@
         int limit;
     }listt;
     listt list[50];
+    
+    typedef struct{
+    	char func_name[100];
+    }funlists;
+    funlists funlist[50];	
 
-    int count,sw,dv,iff,array_counter,case_state;
+    int count,sw,dv,iff,array_counter,case_state,fun_counter;
     store find_value(char **sym);
     int add_value(char **sym);
     int find_array_value(char **sym,int j);
@@ -43,8 +48,8 @@
     }variable;
 }
 %start program
-%token<variable>INT INTT FL FLOAT ID STRING STT VOID AN INIT EQ NEQ GEQ LEQ STOP GOING LOOP 
-%type<variable>statement factor expr assignments assignment var declaration type display input add sub mul div mod great less equal notequal eqgreat eqless condition if_else elseif else switch_ case cases df for while break_con do_while array array_assignment 
+%token<variable>INT INTT FL FLOAT ID STRING STT VOID AN INIT EQ NEQ GEQ LEQ STOP GOING LOOP FUN
+%type<variable>statement factor expr assignments assignment var declaration type display input add sub mul div mod great less equal notequal eqgreat eqless condition if_else elseif else switch_ case cases df for while break_con do_while array array_assignment function return
 %token IF ELIF ELSE FOR SW CA WHILE COL INC DEC MIN MAX GCD OUTPUTI DO PRIME DF POW OUTPUTF PFA SINE COS TAN LN CMT HEAD ABS FLOOR CEIL RET OUTPUTS PFSN LEN CMP CAT CPY END INPUTI INPUTF
 %left '+' '-'
 %left '*' '/'
@@ -53,7 +58,7 @@
 %%
 
 program:
-    |program statement 
+    |                       program statement 
     ;
 
 statement:
@@ -69,6 +74,7 @@ statement:
     |do_while
     |array
     |array_assignment 
+    |function
     ;
 
 declaration:
@@ -124,9 +130,6 @@ array:
         strcpy(list[array_counter].array_name,a);
         list[array_counter].limit=$5.ival;
         array_counter++;
-
-        //printf("%s %d\n",list[array_counter-1].array_name,list[array_counter-1].limit);
-        //printf("%s %d\n",a,$4.ival);
         }
     |'{' AN ',' expr '}' {$$.ival = find_array_value(&$2.str,$4.ival);}
     ;
@@ -134,7 +137,99 @@ array:
 array_assignment:
     '{' AN ',' expr '}' '<''<' expr {int i = add_array_value(&$2.str,$4.ival); list[i].arr[$4.ival]=$8.ival;}
     ;
-    
+
+function:
+	type FUN  '(' expr ',' expr ',' ')'':''{' expr return '}' { int val1 = $4.ival;
+								    int val2 = $6.ival;
+								    int val3 = $11.ival;
+								    $$.ival = val1 + val2 + val3;}
+        |LEN '(' expr ')'{int a=strlen($3.st);printf("Lenght of string: %d\n",a);$$.ival=a;}
+        |CMP '(' expr ',' expr ')'{store n = find_value(&$3.str),m=find_value(&$5.str);int a = strcmp(n.vas,m.vas);}
+        |CAT '(' expr ',' expr ')'{int i = add_value(&$3.str),j = add_value(&$5.str);strcat(symbol_table[i].vas,symbol_table[j].vas);}
+        |PRIME '(' expr ')'{
+        int check(int n)
+        {
+            if(n==1)
+            {
+                return 0;
+            }
+            if(n==2)
+            {
+                return 1;
+            }
+            if(n%2==0)
+            {
+                return 0;
+            }
+            int m = sqrt(n);
+            for(int i=3;i<=m+2;i+=2)
+            {
+                if(n%i==0)
+                {
+                    return 0;
+                }
+            }
+            return 1;
+        }
+        int n=$3.ival;
+        $$.ival = check(n);
+        $$.ival==0?printf("Not prime.\n"):printf("Prime.\n");
+    }
+    |MIN '(' expr ',' expr ')'{
+        if($3.ival>$5.ival)
+        {
+            $$.ival = $5.ival;
+        }
+        else
+        {
+            $$.ival = $3.ival;
+        }
+        printf("%d\n",$$.ival);
+    }
+    |MAX '(' expr ',' expr ')'{
+        if($3.ival>$5.ival)
+        {
+            $$.ival = $3.ival;
+        }
+        else
+        {
+            $$.ival = $5.ival;
+        }
+        printf("%d\n",$$.ival);
+    }
+    |GCD '(' expr ',' expr ')'{
+       int c;
+       int a = $3.ival;
+       int b = $5.ival;
+       if(a>b)
+       {
+           int temp = a;
+           a=b;
+           b=a;
+       }
+       while(a!=0)
+       {
+           int temp = b%a;
+           b=a;
+           a=temp;
+       }
+       $$.ival = b;
+       printf("%d\n",$$.ival);
+    }
+    |SINE '(' expr ')'{double x = (double)$3.fval,ans = sin((x*3.1416)/180.0);printf("%f\n",$$.fval=(float)ans);}
+    |COS '(' expr ')'{double x = (double)$3.fval,ans = cos((x*3.1416)/180.0); printf("%f\n",$$.fval=(float)ans); }
+    |TAN '(' expr ')'{double x = (double)$3.fval,ans = tan((x*3.1416)/180.0); printf("%f\n",$$.fval=(float)ans); }
+    |POW '(' expr ',' expr ')'{double x = (double)$3.fval,y = (double)$5.fval;printf("%f\n",$$.fval=(float)pow(x,y));}
+    |LN '(' expr ')'{float x = $3.fval,ans = log(x);printf("%f\n",$$.fval=ans);}
+    |FLOOR '(' expr ')'{$$.ival=(int)$3.fval;printf("%d\n",$$.ival);}
+    |CEIL '(' expr ')' {$$.ival=(int)$3.fval+1;printf("%d\n",$$.ival);}
+        ;
+        
+return:
+       RET {$$.str = "RETURN";}
+       |   {$$.str = "VOID";}
+       ;
+       
 assignment: 
     var ':' type '<''<' expr   {
                     if($6.ival==INT_MIN && $6.fval==FLT_MIN && symbol_table[$1.ival].val==INT_MAX && symbol_table[$1.ival].vall==FLT_MAX)
@@ -198,7 +293,8 @@ expr:
     |'/''(' div ')' {$$.ival=$3.ival;$$.fval=$3.fval;if($3.st!=NULL){strcpy($$.st,$3.st);}}
     |'%''(' mod ')' {$$.ival=$3.ival;$$.fval=$3.fval;if($3.st!=NULL){strcpy($$.st,$3.st);}}
     |condition
-    |array
+    |array 
+    |function
     ;
     
 add:
@@ -567,7 +663,8 @@ void yyerror(char *s)
 }
 
 int main(void) {
-    
+freopen("input.txt","r",stdin);
+freopen("output.txt","w",stdout);
 yyparse();
 
 }
