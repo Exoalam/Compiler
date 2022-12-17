@@ -43,8 +43,8 @@
     }variable;
 }
 %start program
-%token<variable>INT INTT FL FLOAT ID STRING STT VOID AN INIT EQ NEQ GEQ LEQ STOP GOING LOOP
-%type<variable>statement factor expr assignments assignment var declaration type display input add sub mul div mod great less equal notequal eqgreat eqless condition if_else elseif else switch_ case cases df for while break_con do_while
+%token<variable>INT INTT FL FLOAT ID STRING STT VOID AN INIT EQ NEQ GEQ LEQ STOP GOING LOOP 
+%type<variable>statement factor expr assignments assignment var declaration type display input add sub mul div mod great less equal notequal eqgreat eqless condition if_else elseif else switch_ case cases df for while break_con do_while array array_assignment 
 %token IF ELIF ELSE FOR SW CA WHILE COL INC DEC MIN MAX GCD OUTPUTI DO PRIME DF POW OUTPUTF PFA SINE COS TAN LN CMT HEAD ABS FLOOR CEIL RET OUTPUTS PFSN LEN CMP CAT CPY END INPUTI INPUTF
 %left '+' '-'
 %left '*' '/'
@@ -67,6 +67,8 @@ statement:
     |for
     |while
     |do_while
+    |array
+    |array_assignment 
     ;
 
 declaration:
@@ -105,7 +107,34 @@ display:
     |END {printf("\n");}
     ;
     
+array:
+    AN ':' type'[' expr ']'{
+        char a[100];
+        strcpy(a,$1.str);
+        int i=0;
+        while(1)
+        {
+            if(a[i]==':')
+            {
+                break;
+            }
+            i++;
+        }
+        a[i]='\0';
+        strcpy(list[array_counter].array_name,a);
+        list[array_counter].limit=$5.ival;
+        array_counter++;
 
+        //printf("%s %d\n",list[array_counter-1].array_name,list[array_counter-1].limit);
+        //printf("%s %d\n",a,$4.ival);
+        }
+    |'{' AN ',' expr '}' {$$.ival = find_array_value(&$2.str,$4.ival);}
+    ;
+    
+array_assignment:
+    '{' AN ',' expr '}' '<''<' expr {int i = add_array_value(&$2.str,$4.ival); list[i].arr[$4.ival]=$8.ival;}
+    ;
+    
 assignment: 
     var ':' type '<''<' expr   {
                     if($6.ival==INT_MIN && $6.fval==FLT_MIN && symbol_table[$1.ival].val==INT_MAX && symbol_table[$1.ival].vall==FLT_MAX)
@@ -169,6 +198,7 @@ expr:
     |'/''(' div ')' {$$.ival=$3.ival;$$.fval=$3.fval;if($3.st!=NULL){strcpy($$.st,$3.st);}}
     |'%''(' mod ')' {$$.ival=$3.ival;$$.fval=$3.fval;if($3.st!=NULL){strcpy($$.st,$3.st);}}
     |condition
+    |array
     ;
     
 add:
@@ -486,7 +516,7 @@ int find_array_value(char **sym,int j)
     }
     a[i]='\0';
 	int p = 0;
-	for(int i=0;i<count;i++)
+	for(int i=0;i<array_counter;i++)
 	{
 		if(!strcmp(a,list[i].array_name))
 		{

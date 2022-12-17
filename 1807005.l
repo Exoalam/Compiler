@@ -45,7 +45,7 @@
 "@"                               {return *yytext;}
 [#][a-z<>.h]+                     {return HEAD;}
 [/]{2}.*                          {return CMT;}
-[@][a-zA-Z0-9]+                   {yylval.variable.str = yytext;
+[@][a-zA-Z0-9]+                      {yylval.variable.str = yytext;
                                     return AN;}
 [ ;\t\n]                           {}
 "stop"                            {return STOP;}
